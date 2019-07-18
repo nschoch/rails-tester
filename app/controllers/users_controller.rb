@@ -10,13 +10,26 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-    
     if @user.save
-      flash[:success] = "Welcome to the Sample App!"
       log_in @user
+      flash[:success] = "Welcome to the Sample App!"
       redirect_to @user
     else
       render 'new'
+    end
+  end
+
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update_attributes(user_params)
+      flash[:success] = "Changes saved."
+      render show
+    else
+      render 'edit'
     end
   end
 
